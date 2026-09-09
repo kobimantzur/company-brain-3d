@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kobimantzur/company-brain/brain.schema.json",
+  "$id": "https://github.com/kobimantzur/company-brain-3d/brain.schema.json",
   "title": "Company Brain",
   "description": "A recursive tree. Every node needs only a title. Depth 1 = lenses (the toggle), depth 2 = brain regions, deeper = hot-spots inside their parent, leaves = single neurons.",
   "type": "object",
