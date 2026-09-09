@@ -1,7 +1,7 @@
 {
   "name": "company-brain-3d",
-  "version": "0.1.0",
-  "description": "React component: a 3D brain explorer for your company's data. Drop in a JSON tree and fly from departments down to a single neuron \u2014 company brains, knowledge bases, data catalogs, taxonomies, org charts. Ships a framework-free iframe bundle too.",
+  "version": "0.1.1",
+  "description": "React component: a 3D brain explorer for your company's data. Drop in a JSON tree and fly from departments down to a single neuron — company brains, knowledge bases, data catalogs, taxonomies, org charts. Ships a framework-free iframe bundle too.",
   "license": "MIT",
   "repository": {
     "type": "git",

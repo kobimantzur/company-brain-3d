@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+Packaging and docs only — the component itself is unchanged.
+
+- `brain.schema.json` shipped with a `$id` pointing at the pre-rename repo. Fixed to `company-brain-3d`
+- The demo site built with `base: '/company-brain/'`, so every asset 404'd on GitHub Pages and the page rendered blank. Fixed
+- Fixed the two dead links in the issue-template chooser
+
 ## 0.1.0
 
 First release.
