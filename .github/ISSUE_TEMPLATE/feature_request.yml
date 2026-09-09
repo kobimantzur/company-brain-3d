@@ -1,0 +1,17 @@
+name: Feature request
+description: Suggest something the component should do
+labels: [enhancement]
+body:
+  - type: textarea
+    attributes:
+      label: What you're trying to do
+      description: The problem, not the solution — it often has a simpler answer.
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: What you have in mind
+  - type: checkboxes
+    attributes:
+      label: Scope
+      options:
+        - label: I've checked this isn't already possible via props, tokens or the JSON

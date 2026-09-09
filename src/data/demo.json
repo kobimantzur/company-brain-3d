@@ -1,0 +1,603 @@
+{
+  "version": 1,
+  "title": "Northwind Systems",
+  "description": "B2B software company \u00b7 349 people \u00b7 fictional demo data",
+  "children": [
+    {
+      "id": "sources",
+      "title": "Data sources",
+      "description": "Where the company's knowledge actually lives.",
+      "value": "6 sources",
+      "children": [
+        {
+          "id": "emails",
+          "title": "Emails",
+          "description": "Every email in and out of the company.",
+          "value": "1.2M emails",
+          "color": "#3b82f6",
+          "region": "frontal",
+          "children": [
+            {
+              "id": "em-shared",
+              "title": "Shared inboxes",
+              "description": "support@, sales@, billing@ \u2014 the front doors.",
+              "value": "380K",
+              "children": [
+                {
+                  "id": "em-support",
+                  "title": "support@",
+                  "description": "Where customers write in when something breaks.",
+                  "value": "210K"
+                },
+                {
+                  "id": "em-sales",
+                  "title": "sales@",
+                  "description": "Inbound interest and quote requests.",
+                  "value": "120K"
+                },
+                {
+                  "id": "em-billing",
+                  "title": "billing@",
+                  "description": "Invoices, receipts and payment questions.",
+                  "value": "50K"
+                }
+              ]
+            },
+            {
+              "id": "em-reps",
+              "title": "Personal mailboxes",
+              "description": "Each person's own inbox.",
+              "value": "740K",
+              "children": [
+                {
+                  "id": "em-active",
+                  "title": "Live threads",
+                  "description": "Replied to in the last week.",
+                  "value": "6.2K"
+                },
+                {
+                  "id": "em-quiet",
+                  "title": "Gone quiet",
+                  "description": "No reply in 30+ days.",
+                  "value": "2.4K"
+                }
+              ]
+            },
+            {
+              "id": "em-outbound",
+              "title": "Outbound campaigns",
+              "description": "Newsletters and sequences we send.",
+              "value": "96K"
+            },
+            {
+              "id": "em-attach",
+              "title": "Attachments",
+              "description": "Contracts, decks and spreadsheets people mailed around.",
+              "value": "210K files"
+            }
+          ]
+        },
+        {
+          "id": "chat",
+          "title": "Company Chat",
+          "description": "Slack and Teams \u2014 where the day-to-day actually happens.",
+          "value": "4.8M messages",
+          "color": "#a78bfa",
+          "region": "temporal",
+          "children": [
+            {
+              "id": "ch-eng",
+              "title": "#engineering",
+              "description": "Builds, bugs and design debates.",
+              "value": "1.4M"
+            },
+            {
+              "id": "ch-support",
+              "title": "#support",
+              "description": "Live triage and customer escalations.",
+              "value": "890K"
+            },
+            {
+              "id": "ch-sales",
+              "title": "#sales",
+              "description": "Deals in flight and competitive intel.",
+              "value": "620K"
+            },
+            {
+              "id": "ch-general",
+              "title": "#general",
+              "description": "Announcements and everything else.",
+              "value": "310K"
+            },
+            {
+              "id": "ch-dms",
+              "title": "Direct messages",
+              "description": "The private half of the company.",
+              "value": "1.5M"
+            },
+            {
+              "id": "ch-meetings",
+              "title": "Huddles & meeting notes",
+              "description": "Recorded calls and their summaries.",
+              "value": "12K"
+            }
+          ]
+        },
+        {
+          "id": "crm",
+          "title": "CRM",
+          "description": "Accounts, deals and everything sales logs.",
+          "value": "760K records",
+          "color": "#34d399",
+          "region": "stem",
+          "children": [
+            {
+              "id": "crm-accounts",
+              "title": "Accounts",
+              "description": "Every company we sell to or want to.",
+              "value": "12.4K",
+              "children": [
+                {
+                  "id": "crm-customers",
+                  "title": "Customers",
+                  "description": "Paying today.",
+                  "value": "3.1K"
+                },
+                {
+                  "id": "crm-prospects",
+                  "title": "Prospects",
+                  "description": "In the pipeline, not yet closed.",
+                  "value": "9.3K"
+                }
+              ]
+            },
+            {
+              "id": "crm-contacts",
+              "title": "Contacts",
+              "description": "The people at those companies.",
+              "value": "84K"
+            },
+            {
+              "id": "crm-deals",
+              "title": "Deals",
+              "description": "Opportunities and where they landed.",
+              "value": "21K",
+              "children": [
+                {
+                  "id": "crm-open",
+                  "title": "Open pipeline",
+                  "description": "Live opportunities.",
+                  "value": "$48M"
+                },
+                {
+                  "id": "crm-won",
+                  "title": "Won",
+                  "description": "Closed and signed.",
+                  "value": "8.4K"
+                },
+                {
+                  "id": "crm-lost",
+                  "title": "Lost",
+                  "description": "With the reason why.",
+                  "value": "11K"
+                }
+              ]
+            },
+            {
+              "id": "crm-activity",
+              "title": "Activity log",
+              "description": "Calls, notes and next steps against each account.",
+              "value": "640K"
+            }
+          ]
+        },
+        {
+          "id": "tickets",
+          "title": "Support Tickets",
+          "description": "Every problem a customer has reported.",
+          "value": "212K tickets",
+          "color": "#fbbf24",
+          "region": "parietal",
+          "children": [
+            {
+              "id": "tk-open",
+              "title": "Open",
+              "description": "Waiting on us right now.",
+              "value": "1.4K",
+              "children": [
+                {
+                  "id": "tk-new",
+                  "title": "New",
+                  "description": "Not yet triaged.",
+                  "value": "310"
+                },
+                {
+                  "id": "tk-progress",
+                  "title": "In progress",
+                  "description": "Someone is on it.",
+                  "value": "780"
+                },
+                {
+                  "id": "tk-waiting",
+                  "title": "Waiting on customer",
+                  "description": "Ball in their court.",
+                  "value": "310"
+                }
+              ]
+            },
+            {
+              "id": "tk-solved",
+              "title": "Solved",
+              "description": "Closed, with how it was fixed.",
+              "value": "210K"
+            },
+            {
+              "id": "tk-escalations",
+              "title": "Escalations",
+              "description": "Went past first line.",
+              "value": "320"
+            },
+            {
+              "id": "tk-kb",
+              "title": "Help articles",
+              "description": "The answers we wrote down.",
+              "value": "1.8K"
+            },
+            {
+              "id": "tk-csat",
+              "title": "Satisfaction scores",
+              "description": "What customers said afterwards.",
+              "value": "42K"
+            }
+          ]
+        },
+        {
+          "id": "calls",
+          "title": "Phone Calls",
+          "description": "Recorded and transcribed conversations.",
+          "value": "254K calls",
+          "color": "#fb923c",
+          "region": "occipital",
+          "children": [
+            {
+              "id": "ca-support",
+              "title": "Support calls",
+              "description": "Customers on the phone with an issue.",
+              "value": "140K"
+            },
+            {
+              "id": "ca-sales",
+              "title": "Sales calls",
+              "description": "Demos, discovery and negotiations.",
+              "value": "96K",
+              "children": [
+                {
+                  "id": "ca-demo",
+                  "title": "Demos",
+                  "description": "First real look at the product.",
+                  "value": "38K"
+                },
+                {
+                  "id": "ca-negotiation",
+                  "title": "Negotiations",
+                  "description": "Pricing and terms.",
+                  "value": "12K"
+                }
+              ]
+            },
+            {
+              "id": "ca-voicemail",
+              "title": "Voicemails",
+              "description": "Missed, left as a message.",
+              "value": "18K"
+            },
+            {
+              "id": "ca-transcripts",
+              "title": "Transcripts",
+              "description": "Searchable text of every call.",
+              "value": "254K"
+            }
+          ]
+        },
+        {
+          "id": "accounting",
+          "title": "Accounting",
+          "description": "Money in, money out, and the paperwork.",
+          "value": "$92M tracked",
+          "color": "#f472b6",
+          "region": "temporal",
+          "children": [
+            {
+              "id": "ac-invoices",
+              "title": "Invoices",
+              "description": "What we have billed.",
+              "value": "84K",
+              "children": [
+                {
+                  "id": "ac-paid",
+                  "title": "Paid",
+                  "description": "Settled and closed.",
+                  "value": "76K"
+                },
+                {
+                  "id": "ac-outstanding",
+                  "title": "Outstanding",
+                  "description": "Inside terms.",
+                  "value": "6.2K"
+                },
+                {
+                  "id": "ac-overdue",
+                  "title": "Overdue",
+                  "description": "Past due, chasing.",
+                  "value": "1.8K"
+                }
+              ]
+            },
+            {
+              "id": "ac-payments",
+              "title": "Payments",
+              "description": "What actually landed.",
+              "value": "79K"
+            },
+            {
+              "id": "ac-expenses",
+              "title": "Expenses",
+              "description": "Vendors, tools and travel.",
+              "value": "120K"
+            },
+            {
+              "id": "ac-subs",
+              "title": "Subscriptions",
+              "description": "Recurring revenue by plan.",
+              "value": "$68M ARR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "departments",
+      "title": "Departments",
+      "description": "Who does what.",
+      "value": "7 departments",
+      "children": [
+        {
+          "id": "sales",
+          "title": "Sales",
+          "description": "Who we sell to, and how the pipeline is doing.",
+          "value": "64 people",
+          "color": "#3b82f6",
+          "region": "frontal",
+          "children": [
+            {
+              "id": "sa-pipeline",
+              "title": "Pipeline",
+              "description": "Everything in flight this quarter.",
+              "value": "$48M"
+            },
+            {
+              "id": "sa-accounts",
+              "title": "Accounts",
+              "description": "Named accounts and who owns them.",
+              "value": "12.4K"
+            },
+            {
+              "id": "sa-quota",
+              "title": "Quota & forecast",
+              "description": "Targets versus where we actually are.",
+              "value": "92% to plan"
+            },
+            {
+              "id": "sa-playbooks",
+              "title": "Playbooks",
+              "description": "How we qualify, demo and price.",
+              "value": "18 docs"
+            }
+          ]
+        },
+        {
+          "id": "success",
+          "title": "Customer Success",
+          "description": "Keeping customers alive after the sale.",
+          "value": "41 people",
+          "color": "#a78bfa",
+          "region": "temporal",
+          "children": [
+            {
+              "id": "cs-renewals",
+              "title": "Renewals",
+              "description": "Coming up in the next two quarters.",
+              "value": "$21M"
+            },
+            {
+              "id": "cs-risk",
+              "title": "Accounts at risk",
+              "description": "Health score dropped or usage fell off.",
+              "value": "84"
+            },
+            {
+              "id": "cs-onboarding",
+              "title": "Onboarding",
+              "description": "New customers still getting set up.",
+              "value": "120"
+            },
+            {
+              "id": "cs-qbr",
+              "title": "Business reviews",
+              "description": "Scheduled check-ins with the big ones.",
+              "value": "310"
+            }
+          ]
+        },
+        {
+          "id": "support",
+          "title": "Support",
+          "description": "The team answering when something breaks.",
+          "value": "58 people",
+          "color": "#fbbf24",
+          "region": "parietal",
+          "children": [
+            {
+              "id": "su-queues",
+              "title": "Queues",
+              "description": "What is waiting, and for how long.",
+              "value": "1.4K open"
+            },
+            {
+              "id": "su-sla",
+              "title": "SLA performance",
+              "description": "Are we answering fast enough.",
+              "value": "94% met"
+            },
+            {
+              "id": "su-escalations",
+              "title": "Escalations",
+              "description": "Past first line, needs an engineer.",
+              "value": "320"
+            },
+            {
+              "id": "su-macros",
+              "title": "Saved replies",
+              "description": "Canned answers to the common ones.",
+              "value": "240"
+            }
+          ]
+        },
+        {
+          "id": "engineering",
+          "title": "Engineering",
+          "description": "The people who build and run the product.",
+          "value": "120 people",
+          "color": "#22d3ee",
+          "region": "occipital",
+          "children": [
+            {
+              "id": "en-services",
+              "title": "Services",
+              "description": "What we run in production.",
+              "value": "46"
+            },
+            {
+              "id": "en-incidents",
+              "title": "Incidents",
+              "description": "When it broke, and what we learned.",
+              "value": "210"
+            },
+            {
+              "id": "en-roadmap",
+              "title": "Roadmap",
+              "description": "What is shipping next.",
+              "value": "38 items"
+            },
+            {
+              "id": "en-oncall",
+              "title": "On-call",
+              "description": "Who is holding the pager.",
+              "value": "24/7"
+            }
+          ]
+        },
+        {
+          "id": "finance",
+          "title": "Finance",
+          "description": "Revenue, spend and everything auditable.",
+          "value": "22 people",
+          "color": "#34d399",
+          "region": "stem",
+          "children": [
+            {
+              "id": "fi-revenue",
+              "title": "Revenue",
+              "description": "ARR, growth and churn.",
+              "value": "$68M ARR"
+            },
+            {
+              "id": "fi-ar",
+              "title": "Receivables",
+              "description": "What customers owe us.",
+              "value": "$8.4M"
+            },
+            {
+              "id": "fi-ap",
+              "title": "Payables",
+              "description": "What we owe everyone else.",
+              "value": "$3.1M"
+            },
+            {
+              "id": "fi-compliance",
+              "title": "Compliance",
+              "description": "SOC 2, audits and the paper trail.",
+              "value": "4 audits"
+            }
+          ]
+        },
+        {
+          "id": "marketing",
+          "title": "Marketing",
+          "description": "How people find out we exist.",
+          "value": "30 people",
+          "color": "#f472b6",
+          "children": [
+            {
+              "id": "mk-campaigns",
+              "title": "Campaigns",
+              "description": "Running now and what they cost.",
+              "value": "14 live"
+            },
+            {
+              "id": "mk-content",
+              "title": "Content",
+              "description": "Everything we have published.",
+              "value": "620 pieces"
+            },
+            {
+              "id": "mk-web",
+              "title": "Website & SEO",
+              "description": "Traffic, and what it converts to.",
+              "value": "410K visits"
+            },
+            {
+              "id": "mk-events",
+              "title": "Events",
+              "description": "Conferences and webinars.",
+              "value": "22 / yr"
+            }
+          ]
+        },
+        {
+          "id": "people",
+          "title": "People",
+          "description": "Who works here and how they are doing.",
+          "value": "14 people",
+          "color": "#818cf8",
+          "children": [
+            {
+              "id": "pe-directory",
+              "title": "Directory",
+              "description": "Everyone, their role and their manager.",
+              "value": "349 people"
+            },
+            {
+              "id": "pe-hiring",
+              "title": "Hiring",
+              "description": "Open roles and candidates in flight.",
+              "value": "28 open"
+            },
+            {
+              "id": "pe-onboarding",
+              "title": "Onboarding",
+              "description": "New starters in their first 90 days.",
+              "value": "19"
+            },
+            {
+              "id": "pe-policies",
+              "title": "Policies",
+              "description": "Handbook, leave and expenses.",
+              "value": "46 docs"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

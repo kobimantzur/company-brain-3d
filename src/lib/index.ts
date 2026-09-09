@@ -1,0 +1,5 @@
+import './style.css'
+export { CompanyBrain } from './CompanyBrain'
+export type { CompanyBrainProps } from './CompanyBrain'
+export type { Brain, BrainNode, BrainRegion } from './schema'
+export { assertBrain, resolve, flatten } from './schema'

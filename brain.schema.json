@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kobimantzur/company-brain/brain.schema.json",
+  "title": "Company Brain",
+  "description": "A recursive tree. Every node needs only a title. Depth 1 = lenses (the toggle), depth 2 = brain regions, deeper = hot-spots inside their parent, leaves = single neurons.",
+  "type": "object",
+  "required": ["version", "title", "children"],
+  "properties": {
+    "version": { "const": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "children": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/node" } }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "description": "Unique across the whole brain." },
+        "title": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "description": "One plain-English line. Shown on the card." },
+        "value": { "type": "string", "description": "Headline figure shown on the card, e.g. \"65K\" or \"38 people\". Falls back to the child count." },
+        "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$", "description": "Children inherit as tints when unset." },
+        "region": { "enum": ["frontal", "temporal", "parietal", "occipital", "stem"], "description": "Placement hint for depth-2 nodes. Unset = auto." },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/node" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

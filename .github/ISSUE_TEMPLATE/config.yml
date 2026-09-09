@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Live demo
+    url: https://kobimantzur.github.io/company-brain/
+    about: See the component running before filing anything
+  - name: Full guide
+    url: https://github.com/kobimantzur/company-brain/blob/main/docs/GUIDE.md
+    about: Props, theming, embedding and limits

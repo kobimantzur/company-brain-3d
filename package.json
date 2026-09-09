@@ -1,0 +1,92 @@
+{
+  "name": "company-brain-3d",
+  "version": "0.1.0",
+  "description": "React component: a 3D brain explorer for your company's data. Drop in a JSON tree and fly from departments down to a single neuron \u2014 company brains, knowledge bases, data catalogs, taxonomies, org charts. Ships a framework-free iframe bundle too.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobimantzur/company-brain-3d"
+  },
+  "keywords": [
+    "company-brain",
+    "company-brain-3d",
+    "company-brain-visualization",
+    "knowledge-base",
+    "knowledge-graph",
+    "knowledge-graph-visualization",
+    "data-catalog",
+    "semantic-layer",
+    "ontology",
+    "taxonomy",
+    "org-chart",
+    "hierarchy",
+    "tree-visualization",
+    "3d",
+    "threejs",
+    "react-three-fiber",
+    "react",
+    "react-component",
+    "data-visualization",
+    "dataviz",
+    "explorer",
+    "brain-visualization"
+  ],
+  "type": "module",
+  "main": "./dist-lib/index.js",
+  "module": "./dist-lib/index.js",
+  "types": "./dist-lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist-lib/types/index.d.ts",
+      "import": "./dist-lib/index.js"
+    },
+    "./style.css": "./dist-lib/index.css",
+    "./brain.schema.json": "./brain.schema.json"
+  },
+  "files": [
+    "dist-lib",
+    "brain.schema.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "build:lib": "vite build -c vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "prepublishOnly": "npm run build:lib",
+    "build:embed": "vite build -c vite.embed.config.ts",
+    "build:pages": "vite build -c vite.pages.config.ts",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "peerDependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/three": "^0.185.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  },
+  "homepage": "https://github.com/kobimantzur/company-brain-3d",
+  "bugs": {
+    "url": "https://github.com/kobimantzur/company-brain-3d/issues"
+  },
+  "author": "Kobi Mantzur"
+}

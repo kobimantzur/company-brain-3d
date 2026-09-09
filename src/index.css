@@ -1,0 +1,9 @@
+/* demo page only — the component ships its own scoped styles in src/lib/style.css */
+html, body, #root { margin: 0; height: 100%; background: #000; }
+
+/* demo only: light-theme token overrides, to show the component re-skinned */
+.cb-light { --text: #10233a; --muted: #56708c; --line: #c9d6e6; --accent: #0369a1; }
+.cb-light .cb-card { background: rgba(255,255,255,.85); }
+.cb-light .cb-lens { background: rgba(255,255,255,.85); }
+.cb-light .cb-lens button.is-on { background: #dbe7f5; color: #10233a; }
+.cb-light .cb-trail { background: rgba(255,255,255,.9); }

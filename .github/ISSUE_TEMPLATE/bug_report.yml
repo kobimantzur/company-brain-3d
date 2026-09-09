@@ -1,0 +1,26 @@
+name: Bug report
+description: Something renders wrong, crashes, or behaves unexpectedly
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: A brain.json that reproduces it
+      description: The smallest tree that shows the problem.
+      render: json
+  - type: input
+    attributes:
+      label: Version
+      placeholder: company-brain@0.1.0, React 19.2, three 0.185
+  - type: dropdown
+    attributes:
+      label: Where
+      options: [React package, standalone iframe bundle, the demo site]
+  - type: textarea
+    attributes:
+      label: Screenshot or clip
+      description: For anything visual this is usually faster than words.
