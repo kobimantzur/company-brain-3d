@@ -23,6 +23,8 @@ export interface CompanyBrainProps {
   background?: string
   /** Colours for top-level segments that don't set their own `color`. */
   palette?: string[]
+  /** 'dark' (default) glows on black; 'light' is ink on paper, for light host pages. */
+  theme?: 'dark' | 'light'
   className?: string
 }
 
@@ -36,7 +38,7 @@ function colorOf(brain: Brain, path: string[], node: BrainNode, index: number, p
 
 /** Brain in the middle, one card per child of the focused node around it, leader lines into the brain.
  *  Click a card or a region → zoom in. Every level is the same component. */
-export function CompanyBrain({ data, onSelect, defaultLens, zoom = 1, autoRotate = true, scrollZoom = false, height, maxWidth, background, palette = DEFAULT_COLORS, className }: CompanyBrainProps) {
+export function CompanyBrain({ data, onSelect, defaultLens, zoom = 1, autoRotate = true, scrollZoom = false, height, maxWidth, background, palette = DEFAULT_COLORS, theme = 'dark', className }: CompanyBrainProps) {
   assertBrain(data)
   const [path, setPathRaw] = useState<string[]>(() => [defaultLens && data.children.some((l) => l.id === defaultLens) ? defaultLens : data.children[0].id])
   const [hoverCard, setHoverCard] = useState<string | null>(null)
@@ -137,6 +139,7 @@ export function CompanyBrain({ data, onSelect, defaultLens, zoom = 1, autoRotate
   return (
     <div
       ref={wrap}
+      data-theme={theme}
       className={`cb-root depth-${Math.min(depth, 3)}${hot ? ' has-hot' : ''}${className ? ` ${className}` : ''}`}
       style={{ ...(background ? { ['--cb-bg' as string]: background === 'transparent' ? 'transparent' : background } : null), ...(height ? { ['--cb-height' as string]: height === 'auto' ? `${autoHeight ?? 520}px` : height, ['--cb-min-height' as string]: '0' } : null), ...(maxWidth ? { ['--cb-max-width' as string]: maxWidth } : null) } as React.CSSProperties}
     >
@@ -174,7 +177,8 @@ export function CompanyBrain({ data, onSelect, defaultLens, zoom = 1, autoRotate
       </div>
 
       <div ref={canvasWrap} className="cb-stage">
-        <Brain3D brain={data} path={path} onPathChange={setPath} highlightId={hoverCard} cameraTargetId={mobile ? camTarget : hoverCard} onHover={setHoverRegion} onProjected={onProjected} zoom={zoom} autoRotate={autoRotate} scrollZoom={scrollZoom} background={background ?? '#000000'} palette={palette} />
+        {/* no explicit default here: Brain3D picks black for dark and transparent (the root's paper) for light */}
+        <Brain3D brain={data} path={path} onPathChange={setPath} highlightId={hoverCard} cameraTargetId={mobile ? camTarget : hoverCard} onHover={setHoverRegion} onProjected={onProjected} zoom={zoom} autoRotate={autoRotate} scrollZoom={scrollZoom} background={background} palette={palette} theme={theme} />
         {depth > 1 && !cards.length && (
           <div className="cb-leaf" style={{ '--c': accent } as React.CSSProperties}>
             <strong>{focus.title}</strong>

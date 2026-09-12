@@ -7,8 +7,25 @@ import type { Brain } from './schema'
 import { buildBrainCloud, type BrainCloud } from './brainShape'
 import { boundsOf, clusterLens, ownership, SCALE, type Cluster, type ClusterMap } from './cluster'
 
-const HOT = new THREE.Color('#ffffff')
-const DIM = new THREE.Color('#1b3a5c')
+export type BrainTheme = 'dark' | 'light'
+
+/**
+ * How the dots are lit per theme. Dark adds light on black (additive blending: overlaps glow, fading
+ * means darkening). Light can't add light on paper — it washes to white — so it paints normally,
+ * highlights push toward ink, and fading means sinking back into the ground.
+ */
+interface Palette { hot: THREE.Color; dim: THREE.Color; ground: THREE.Color; blending: THREE.Blending; lineOpacity: number; glowOpacity: number; hotMix: number }
+const PALETTES: Record<BrainTheme, Palette> = {
+  dark: { hot: new THREE.Color('#ffffff'), dim: new THREE.Color('#1b3a5c'), ground: new THREE.Color('#000000'), blending: THREE.AdditiveBlending, lineOpacity: 0.85, glowOpacity: 0.3, hotMix: 1 },
+  light: { hot: new THREE.Color('#0b1622'), dim: new THREE.Color('#9fb0c3'), ground: new THREE.Color('#f7f9fb'), blending: THREE.NormalBlending, lineOpacity: 0.55, glowOpacity: 0.16, hotMix: 0.55 },
+}
+
+/** Pull a colour back by k (1 = unchanged, 0 = gone). Dark fades to black, light fades to the paper. */
+function recede(c: THREE.Color, k: number, p: Palette) {
+  if (k >= 1) return p.blending === THREE.AdditiveBlending ? c.multiplyScalar(k) : c.lerp(p.hot, Math.min(1, (k - 1) * 0.5))
+  return p.blending === THREE.AdditiveBlending ? c.multiplyScalar(k) : c.lerp(p.ground, 1 - k)
+}
+
 /** Direction the camera sits in, relative to whatever it's looking at. Distance is computed from the geometry. */
 const HOME_DIR = new THREE.Vector3(2.1, 1.7, 10.4).normalize()
 const FOV = 42
@@ -34,9 +51,9 @@ function makeGlowTexture(soft = false) {
 
 // ---------- the wireframe: every dot coloured by which child of the focused node owns it ----------
 
-function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, onHover, onClick }: {
+function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, palette, onHover, onClick }: {
   cloud: BrainCloud; children: Cluster[]; owner: Int16Array; blendFrom: React.MutableRefObject<Float32Array | null>; blend: React.MutableRefObject<number>
-  hovered: number | null; dimOutside: boolean; onHover: (child: number | null) => void; onClick: (child: number) => void
+  hovered: number | null; dimOutside: boolean; palette: Palette; onHover: (child: number | null) => void; onClick: (child: number) => void
 }) {
   const texture = useMemo(() => makeGlowTexture(), [])
   const pointsRef = useRef<THREE.Points>(null)
@@ -56,15 +73,16 @@ function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, 
     const t = clock.getElapsedTime()
     const b = blend.current
     const ease = 1 - Math.pow(1 - b, 3)
+    const p = palette
     cloud.nodes.forEach((n, i) => {
       const o = owner[i]
       const twinkle = 0.5 + 0.5 * Math.max(0, Math.sin(t * 1.3 + n.phase)) ** 2
-      if (o < 0) tmp.copy(DIM).multiplyScalar(dimOutside ? 0.35 : 0.8)
+      if (o < 0) recede(tmp.copy(p.dim), dimOutside ? 0.35 : 0.8, p)
       else {
         const inHover = hovered === o
         const dim = hovered !== null && !inHover
-        tmp.copy(children[o]?.color ?? DIM).lerp(HOT, inHover ? 0.25 + 0.25 * twinkle : twinkle * 0.18)
-        if (dim) tmp.multiplyScalar(0.3)
+        tmp.copy(children[o]?.color ?? p.dim).lerp(p.hot, (inHover ? 0.25 + 0.25 * twinkle : twinkle * 0.18) * p.hotMix)
+        if (dim) recede(tmp, 0.3, p)
       }
       if (blendFrom.current && b < 1) { tmp2.fromArray(blendFrom.current, i * 3); tmp.lerp(tmp2, 1 - ease) }
       tmp.toArray(colors, i * 3)
@@ -73,8 +91,8 @@ function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, 
       const same = hovered !== null && owner[a] === hovered && owner[b2] === hovered
       const dim = hovered !== null && !same
       const k = same ? 1.2 : dim ? 0.25 : 0.7
-      tmp.fromArray(colors, a * 3).multiplyScalar(k).toArray(lineColors, i * 6)
-      tmp.fromArray(colors, b2 * 3).multiplyScalar(k).toArray(lineColors, i * 6 + 3)
+      recede(tmp.fromArray(colors, a * 3), k, p).toArray(lineColors, i * 6)
+      recede(tmp.fromArray(colors, b2 * 3), k, p).toArray(lineColors, i * 6 + 3)
     })
     const pc = pointsRef.current?.geometry.getAttribute('color') as THREE.BufferAttribute | undefined
     const lc = linesRef.current?.geometry.getAttribute('color') as THREE.BufferAttribute | undefined
@@ -89,7 +107,7 @@ function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, 
           <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
           <bufferAttribute attach="attributes-color" args={[lineColors, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial vertexColors transparent opacity={0.85} blending={THREE.AdditiveBlending} depthWrite={false} />
+        <lineBasicMaterial key={palette.blending} vertexColors transparent opacity={palette.lineOpacity} blending={palette.blending} depthWrite={false} />
       </lineSegments>
       <points ref={pointsRef}
         onPointerMove={(e) => { e.stopPropagation(); const o = e.index !== undefined ? owner[e.index] : -1; onHover(o >= 0 ? o : null) }}
@@ -99,7 +117,7 @@ function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, 
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
-        <pointsMaterial size={0.34} map={texture} vertexColors transparent sizeAttenuation blending={THREE.AdditiveBlending} depthWrite={false} />
+        <pointsMaterial key={palette.blending} size={0.34} map={texture} vertexColors transparent sizeAttenuation blending={palette.blending} depthWrite={false} />
       </points>
     </group>
   )
@@ -107,7 +125,7 @@ function Cloud({ cloud, children, owner, blendFrom, blend, hovered, dimOutside, 
 
 // ---------- soft fill behind the hovered child ----------
 
-function Glow({ children, hovered }: { children: Cluster[]; hovered: number | null }) {
+function Glow({ children, hovered, palette }: { children: Cluster[]; hovered: number | null; palette: Palette }) {
   const texture = useMemo(() => makeGlowTexture(true), [])
   useEffect(() => () => texture.dispose(), [texture])
   const refs = useRef<(THREE.Sprite | null)[]>([])
@@ -116,7 +134,7 @@ function Glow({ children, hovered }: { children: Cluster[]; hovered: number | nu
       const spr = refs.current[i]
       if (!spr) return
       const mat = spr.material as THREE.SpriteMaterial
-      mat.opacity += ((hovered === i ? 0.3 : 0) - mat.opacity) * 0.15
+      mat.opacity += ((hovered === i ? palette.glowOpacity : 0) - mat.opacity) * 0.15
       const s = spr.scale.x + (c.extent * 2.5 * (0.94 + mat.opacity * 0.14) - spr.scale.x) * 0.15
       spr.scale.set(s, s, 1)
     })
@@ -125,7 +143,7 @@ function Glow({ children, hovered }: { children: Cluster[]; hovered: number | nu
     <group>
       {children.map((c, i) => (
         <sprite key={c.id} ref={(el) => { refs.current[i] = el }} position={c.centroid} scale={[c.extent * 2.5, c.extent * 2.5, 1]} renderOrder={-1}>
-          <spriteMaterial map={texture} color={c.color} transparent opacity={0} depthWrite={false} depthTest={false} blending={THREE.AdditiveBlending} />
+          <spriteMaterial key={palette.blending} map={texture} color={c.color} transparent opacity={0} depthWrite={false} depthTest={false} blending={palette.blending} />
         </sprite>
       ))}
     </group>
@@ -315,9 +333,13 @@ export interface Brain3DProps {
   background?: string
   /** Colours handed to depth-2 nodes that don't set their own. */
   palette?: string[]
+  /** 'dark' glows on black; 'light' paints ink on paper. Default 'dark'. */
+  theme?: BrainTheme
 }
 
-export function Brain3D({ brain, path, onPathChange, highlightId, cameraTargetId, onHover, onProjected, zoom = 1, autoRotate = true, scrollZoom = false, background = '#000000', palette }: Brain3DProps) {
+export function Brain3D({ brain, path, onPathChange, highlightId, cameraTargetId, onHover, onProjected, zoom = 1, autoRotate = true, scrollZoom = false, background, palette, theme = 'dark' }: Brain3DProps) {
+  const pal = PALETTES[theme]
+  const bg = background ?? (theme === 'light' ? 'transparent' : '#000000')
   const lens = useMemo(() => brain.children.find((l) => l.id === path[0]) ?? brain.children[0], [brain, path])
   const cloud = useMemo(() => buildBrainCloud((lens.children ?? []).map((r) => r.region)), [lens])
   const clusters = useMemo<ClusterMap>(() => clusterLens(cloud, lens, palette), [cloud, lens, palette])
@@ -337,6 +359,8 @@ export function Brain3D({ brain, path, onPathChange, highlightId, cameraTargetId
     lastKey.current = focus.id
     if (colorsRef.current) { blendFrom.current = Float32Array.from(colorsRef.current); blend.current = 0; setBlending(true) }
   }, [focus.id])
+  // a theme switch mid-session: drop the crossfade source, it was lit for the other ground
+  useEffect(() => { blendFrom.current = null; blend.current = 1 }, [theme])
 
   const [hovered, setHoveredRaw] = useState<number | null>(null)
   const [flight, setFlight] = useState<Flight | null>(null)
@@ -389,10 +413,10 @@ export function Brain3D({ brain, path, onPathChange, highlightId, cameraTargetId
       onPointerUp={() => { dragging.current = false }}
       onPointerLeave={() => { dragging.current = false }}>
       <Canvas camera={{ position: HOME_DIR.clone().multiplyScalar(12).toArray(), fov: FOV }} gl={{ alpha: true, antialias: true }} dpr={[1, 2]} raycaster={{ params: { Points: { threshold: 0.3 }, Line: { threshold: 0 }, Mesh: {}, LOD: {}, Sprite: {} } }} style={{ cursor: hot !== null ? 'pointer' : 'grab' }}>
-        {background !== 'transparent' && <color attach="background" args={[background]} />}
+        {bg !== 'transparent' && <color attach="background" args={[bg]} />}
         <Blend blend={blend} active={blending} onDone={() => setBlending(false)} />
-        <Glow children={children} hovered={hot} />
-        <Cloud cloud={cloud} children={children} owner={owner} blendFrom={blendFrom} blend={blend} hovered={hot} dimOutside={focus.depth > 1}
+        <Glow children={children} hovered={hot} palette={pal} />
+        <Cloud cloud={cloud} children={children} owner={owner} blendFrom={blendFrom} blend={blend} hovered={hot} dimOutside={focus.depth > 1} palette={pal}
           onHover={setHovered} onClick={(i) => { if (wasClick()) onPathChange([...path, children[i].id]) }} />
         <ColorTap cloudRef={colorsRef} cloud={cloud} />
         <Labels children={children} hovered={hot} show={focus.depth >= 2} />
