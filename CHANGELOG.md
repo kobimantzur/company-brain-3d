@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- **`theme="light"`**: a light version for light host pages. Cards, chips and labels switch to a paper
+  palette, and the brain paints with normal blending, since additive glow washes out to white on a light
+  ground. Highlights push toward ink and faded regions sink into the paper instead of into black. `dark`
+  stays the default and renders exactly as before.
+- Standalone embed: `?theme=light|dark`, and a host page can switch it live by posting
+  `{ type: 'company-brain:theme', theme }` to the iframe, with no reload.
+- Standalone embed now starts with a transparent body instead of black, so a light embed doesn't flash.
+
 ## 0.1.1
 
 Packaging and docs only — the component itself is unchanged.

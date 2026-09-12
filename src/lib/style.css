@@ -6,11 +6,39 @@
   --line: #21354e;
   --card: #142338;
   --accent: #1e9bff;
+  /* surfaces that used to be hardcoded dark */
+  --cb-default-bg: radial-gradient(ellipse at center, #060b16 0%, #000 70%);
+  --card-hot: #17293f;
+  --shadow: rgba(0, 0, 0, .5);
+  --chip: #21354e;
+  --chip-on: #24405f;
+  --marker: #eaf7ff;
+  --marker-hot: #fff;
+  --marker-halo: #000;
+}
+
+/* theme="light": same layout and behaviour, ink on paper instead of light on black */
+.cb-root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f7f9fb;
+  --text: #0f1b2a;
+  --muted: #56697e;
+  --line: #d6dfe8;
+  --card: #ffffff;
+  --accent: #1473e6;
+  --cb-default-bg: radial-gradient(ellipse at center, #ffffff 0%, #eef2f6 75%);
+  --card-hot: #ffffff;
+  --shadow: rgba(15, 27, 42, .12);
+  --chip: #eef3f8;
+  --chip-on: #e1ecf8;
+  --marker: #0f1b2a;
+  --marker-hot: #000;
+  --marker-halo: #ffffff;
 }
 
 /* ================= layout: cards | brain | cards ================= */
 .cb-root, .cb-root *, .cb-root *::before, .cb-root *::after { box-sizing: border-box; }
-.cb-root { position: relative; display: grid; grid-template-columns: minmax(200px, 240px) minmax(420px, 1fr) minmax(200px, 240px); grid-template-rows: auto 1fr; height: var(--cb-height, 100%); min-height: var(--cb-min-height, 420px); width: 100%; max-width: var(--cb-max-width, 1180px); margin: 0 auto; color: var(--text); font-family: var(--cb-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); font-size: 14px; background: var(--cb-bg, radial-gradient(ellipse at center, #060b16 0%, #000 70%)); overflow: hidden; }
+.cb-root { position: relative; display: grid; grid-template-columns: minmax(200px, 240px) minmax(420px, 1fr) minmax(200px, 240px); grid-template-rows: auto 1fr; height: var(--cb-height, 100%); min-height: var(--cb-min-height, 420px); width: 100%; max-width: var(--cb-max-width, 1180px); margin: 0 auto; color: var(--text); font-family: var(--cb-font, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif); font-size: 14px; background: var(--cb-bg, var(--cb-default-bg)); overflow: hidden; }
 .cb-stage { position: relative; min-width: 0; }
 .cb-brain { position: absolute; inset: 0; overflow: hidden; }
 .cb-brain canvas { display: block; }
@@ -28,6 +56,7 @@
 .cb-lines .cb-dot { filter: drop-shadow(0 0 4px currentColor); opacity: .7; }
 .cb-lines g.is-hot line { opacity: 1; stroke-width: 2; stroke-dasharray: none; filter: drop-shadow(0 0 6px currentColor); }
 .cb-lines g.is-hot circle, .cb-lines g.is-hot .cb-dot { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+.cb-root[data-theme='light'] .cb-lines line { opacity: .45; }
 
 /* ================= cards ================= */
 .cb-card { --c: #7dd3fc; width: 100%; max-width: 234px; display: flex; flex-direction: column; gap: 4px; text-align: left; background: color-mix(in srgb, var(--c) 9%, var(--card)); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); border-radius: 14px; padding: 12px 14px; color: var(--text); font: inherit; cursor: pointer; backdrop-filter: blur(8px); transition: transform .15s ease-out, border-color .15s, box-shadow .15s, opacity .2s, filter .2s; }
@@ -35,18 +64,20 @@
 .cb-card-title strong { font-size: 11.5px; letter-spacing: .015em; text-transform: uppercase; line-height: 1.3; overflow-wrap: break-word; min-width: 0; }
 .cb-card-title em { font-style: normal; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; flex: none; }
 .cb-card-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
-.cb-card:hover, .cb-card.is-hot { border-color: var(--c); background: color-mix(in srgb, var(--c) 20%, #17293f); box-shadow: 0 0 0 1.5px var(--c), 0 0 42px color-mix(in srgb, var(--c) 55%, transparent), 0 8px 24px rgba(0,0,0,.5); z-index: 5; }
+.cb-card:hover, .cb-card.is-hot { border-color: var(--c); background: color-mix(in srgb, var(--c) 20%, var(--card-hot)); box-shadow: 0 0 0 1.5px var(--c), 0 0 42px color-mix(in srgb, var(--c) 55%, transparent), 0 8px 24px var(--shadow); z-index: 5; }
+.cb-root[data-theme='light'] .cb-card:hover, .cb-root[data-theme='light'] .cb-card.is-hot { background: color-mix(in srgb, var(--c) 12%, var(--card-hot)); box-shadow: 0 0 0 1.5px var(--c), 0 0 28px color-mix(in srgb, var(--c) 28%, transparent), 0 8px 24px var(--shadow); }
 .cb-card.side-left.is-hot { transform: translateY(-1px) scale(1.045) translateX(-4px); }
 .cb-card.side-right.is-hot { transform: translateY(-1px) scale(1.045) translateX(4px); }
 .cb-root.has-hot .cb-card:not(.is-hot) { opacity: .3; filter: saturate(.5) brightness(.8); }
+.cb-root[data-theme='light'].has-hot .cb-card:not(.is-hot) { opacity: .45; filter: saturate(.5); }
 
 /* ================= overlays on the brain ================= */
 .cb-lens { display: inline-flex; padding: 3px; border-radius: 999px; background: color-mix(in srgb, var(--card) 82%, transparent); border: 1px solid var(--line); backdrop-filter: blur(8px); gap: 2px; }
 .cb-lens button { background: none; border: 0; color: var(--muted); font: inherit; font-size: 12px; font-weight: 600; padding: 6px 16px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
-.cb-lens button.is-on { background: #24405f; color: var(--text); box-shadow: 0 0 0 1px rgba(30,155,255,.35), 0 0 14px rgba(30,155,255,.15); }
+.cb-lens button.is-on { background: var(--chip-on); color: var(--text); box-shadow: 0 0 0 1px rgba(30,155,255,.35), 0 0 14px rgba(30,155,255,.15); }
 
 .cb-trail { --c: #7dd3fc; display: flex; align-items: center; gap: 6px; padding: 6px 12px 6px 6px; border-radius: 999px; background: color-mix(in srgb, var(--card) 85%, transparent); border: 1px solid var(--line); backdrop-filter: blur(8px); white-space: nowrap; max-width: 90%; overflow: hidden; }
-.cb-trail > button { background: #21354e; border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 12px; font-weight: 600; line-height: 1; padding: 6px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.cb-trail > button { background: var(--chip); border: 1px solid var(--line); color: var(--text); font: inherit; font-size: 12px; font-weight: 600; line-height: 1; padding: 6px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
 .cb-trail > button:hover { border-color: var(--c); }
 .cb-crumb { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
 .cb-crumb i { font-style: normal; color: var(--muted); }
@@ -61,9 +92,9 @@
 
 
 /* labels on hot-spots inside an open region */
-.cb-marker { --c: #7dd3fc; display: flex; align-items: baseline; gap: 5px; max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; font-weight: 600; color: #eaf7ff; text-shadow: 0 0 6px #000, 0 0 12px color-mix(in srgb, var(--c) 60%, transparent); transform: translateY(16px); transition: transform .15s, color .15s; }
+.cb-marker { --c: #7dd3fc; display: flex; align-items: baseline; gap: 5px; max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; font-weight: 600; color: var(--marker); text-shadow: 0 0 6px var(--marker-halo), 0 0 12px color-mix(in srgb, var(--c) 60%, transparent); transform: translateY(16px); transition: transform .15s, color .15s; }
 .cb-marker em { font-style: normal; font-weight: 400; font-size: 11px; color: var(--muted); }
-.cb-marker.is-hot { color: #fff; transform: translateY(16px) scale(1.08); }
+.cb-marker.is-hot { color: var(--marker-hot); transform: translateY(16px) scale(1.08); }
 
 /* ================= mobile: strip above the brain, scroll-snap, centred chip = hovered ================= */
 @media (max-width: 900px) {

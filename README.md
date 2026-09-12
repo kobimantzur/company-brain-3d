@@ -98,7 +98,8 @@ My organisation: <describe it>
 | `data` | — | The tree |
 | `onSelect` | — | `(node, path) => void`, on every zoom-in |
 | `height` | `100%` | Any CSS length, or `auto` to size itself |
-| `background` | dark | Any CSS colour, or `transparent` |
+| `theme` | `dark` | `light` for light pages: ink on paper instead of glow on black |
+| `background` | per theme | Any CSS colour, or `transparent` |
 | `palette` | 8 colours | For segments without their own `color` |
 | `scrollZoom` | `false` | Off, so the page keeps scrolling over the canvas |
 
