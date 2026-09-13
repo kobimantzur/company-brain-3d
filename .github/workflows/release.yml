@@ -1,0 +1,61 @@
+name: Release
+
+# Publishing a GitHub release publishes that version to npm, with provenance.
+#
+# Auth is npm trusted publishing (OIDC): no npm token is stored in this repo. The trusted publisher is
+# configured on npmjs.com → company-brain-3d → Settings → Trusted publishing, pointing at this exact
+# filename (release.yml). Renaming this file breaks publishing until that setting is updated.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # lets GitHub mint the OIDC token that npm verifies
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest # trusted publishing doesn't support self-hosted runners
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm >= 11.5.1; Node 22 ships npm 10.
+      - run: npm install -g npm@^11.5.1
+
+      - name: Check the tag matches package.json and isn't published yet
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$TAG" != "$VERSION" ]; then
+            echo "::error::Release tag $GITHUB_REF_NAME doesn't match package.json version $VERSION. Bump the version in a PR, merge it, then release v$VERSION."
+            exit 1
+          fi
+          if npm view "company-brain-3d@$VERSION" version >/dev/null 2>&1; then
+            echo "::error::company-brain-3d@$VERSION is already on npm. Versions can't be republished; bump the version."
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npx tsc -b
+      - run: npm run lint
+
+      # prepublishOnly builds dist-lib. Pre-release versions (e.g. 0.3.0-beta.1) go to the "next"
+      # dist-tag so they never become what `npm i company-brain-3d` installs.
+      - name: Publish
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [[ "$VERSION" == *-* ]]; then
+            npm publish --tag next
+          else
+            npm publish
+          fi
