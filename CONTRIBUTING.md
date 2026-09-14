@@ -29,6 +29,19 @@ npm test          # 16 tests, desktop + mobile
 CI runs all three. A UI change should say what it looks like — a screenshot or a short clip in the PR
 saves a round trip.
 
+## Releasing
+
+Publishing a GitHub release publishes that version to npm (`.github/workflows/release.yml`).
+
+1. In a PR: bump `version` in `package.json` and rename `## Unreleased` in `CHANGELOG.md` to the version.
+2. Merge it to `main` and let CI pass.
+3. Create a GitHub release with the tag `v<version>` (e.g. `v0.2.0`), pasting the changelog entry as the notes.
+
+The workflow checks the tag matches `package.json`, typechecks, lints, and publishes with provenance.
+Versions with a pre-release suffix (`0.3.0-beta.1`) go to the `next` dist-tag instead of `latest`.
+Auth is npm trusted publishing, so there's no npm token in the repo. The trusted publisher on npmjs.com
+names `release.yml`, so renaming the workflow breaks publishing until that setting is updated too.
+
 ## Layout
 
 | Path | What's in it |
